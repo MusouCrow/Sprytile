@@ -594,12 +594,25 @@ class SprytileGui(bpy.types.Operator):
         glColor4f(plane_col[0], plane_col[1], plane_col[2], 1)
         glLineWidth(2)
 
+        pos = cursor_loc * 1
+        normal_mode = sprytile_data.normal_mode
+
+        if normal_mode == 'X':
+            pos.y -= ceil(plane_size[0] * 0.5)
+            pos.z -= ceil(plane_size[1] * 0.5)
+        elif normal_mode == 'Y':
+            pos.x += ceil(plane_size[0] * 0.5)
+            pos.z -= ceil(plane_size[1] * 0.5)
+        elif normal_mode == 'Z':
+            pos.x += ceil(plane_size[0] * 0.5)
+            pos.y -= ceil(plane_size[1] * 0.5)
+
         for x in range(grid_min[0] + 1, grid_max[0]):
-            draw_start = cursor_loc + (paint_right_vector * x) + (paint_up_vector * grid_min[1])
+            draw_start = pos + (paint_right_vector * x) + (paint_up_vector * grid_min[1])
             draw_end = draw_start + paint_up_vector * plane_size[1]
             draw_world_line(draw_start, draw_end)
         for y in range(grid_min[1] + 1, grid_max[1]):
-            draw_start = cursor_loc + (paint_right_vector * grid_min[0]) + (paint_up_vector * y)
+            draw_start = pos + (paint_right_vector * grid_min[0]) + (paint_up_vector * y)
             draw_end = draw_start + paint_right_vector * plane_size[0]
             draw_world_line(draw_start, draw_end)
 
@@ -608,10 +621,10 @@ class SprytileGui(bpy.types.Operator):
         y_offset_min = paint_up_vector * grid_min[1]
         y_offset_max = paint_up_vector * grid_max[1]
 
-        p0 = view3d_utils.location_3d_to_region_2d(region, rv3d, cursor_loc + x_offset_min + y_offset_min)
-        p1 = view3d_utils.location_3d_to_region_2d(region, rv3d, cursor_loc + x_offset_min + y_offset_max)
-        p2 = view3d_utils.location_3d_to_region_2d(region, rv3d, cursor_loc + x_offset_max + y_offset_max)
-        p3 = view3d_utils.location_3d_to_region_2d(region, rv3d, cursor_loc + x_offset_max + y_offset_min)
+        p0 = view3d_utils.location_3d_to_region_2d(region, rv3d, pos + x_offset_min + y_offset_min)
+        p1 = view3d_utils.location_3d_to_region_2d(region, rv3d, pos + x_offset_min + y_offset_max)
+        p2 = view3d_utils.location_3d_to_region_2d(region, rv3d, pos + x_offset_max + y_offset_max)
+        p3 = view3d_utils.location_3d_to_region_2d(region, rv3d, pos + x_offset_max + y_offset_min)
 
         if p0 is None or p1 is None or p2 is None or p3 is None:
             return

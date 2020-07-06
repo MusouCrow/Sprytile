@@ -2,6 +2,7 @@ import bpy
 import numpy
 from mathutils import Matrix
 from mathutils.geometry import intersect_line_plane
+from math import floor, ceil
 
 import sprytile_utils
 import sprytile_uv
@@ -69,8 +70,27 @@ class ToolFill:
 
         # Check hit_coord is inside the work plane grid
         plane_size = sprytile_data.fill_plane_size
+        normal_mode = sprytile_data.normal_mode
 
         grid_min, grid_max = sprytile_utils.get_workplane_area(plane_size[0], plane_size[1])
+        
+        mx = 0
+        my = 0
+
+        if normal_mode == 'X':
+            mx = -ceil(plane_size[0] * 0.5)
+            my = -ceil(plane_size[1] * 0.5)
+        elif normal_mode == 'Y':
+            mx = ceil(plane_size[0] * 0.5)
+            my = ceil(plane_size[1] * 0.5)
+        elif normal_mode == 'Z':
+            mx = ceil(plane_size[0] * 0.5)
+            my = ceil(plane_size[1] * 0.5)
+
+        grid_min[0] -= mx
+        grid_min[1] -= my
+        grid_max[0] -= mx
+        grid_max[1] -= my
 
         x_offset = 1
         if plane_size[0] % 2 == 1:
