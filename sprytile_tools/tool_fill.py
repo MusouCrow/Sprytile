@@ -71,15 +71,20 @@ class ToolFill:
         # Check hit_coord is inside the work plane grid
         plane_size = sprytile_data.fill_plane_size
         normal_mode = sprytile_data.normal_mode
+        paint_align = sprytile_data.paint_align
 
         grid_min, grid_max = sprytile_utils.get_workplane_area(plane_size[0], plane_size[1])
         
         mx = 0
         my = 0
 
+        print("grid", grid_right, grid_up)
+
         if normal_mode == 'X':
-            mx = -ceil(plane_size[0] * 0.5)
-            my = -ceil(plane_size[1] * 0.5)
+            dir_x = -1 if grid_right.x != 0 else 1
+            dir_y = 1 if grid_right.y != 0 else -1
+            mx = ceil(plane_size[0] * 0.5) * dir_x
+            my = ceil(plane_size[1] * 0.5) * dir_y
         elif normal_mode == 'Y':
             mx = ceil(plane_size[0] * 0.5)
             my = ceil(plane_size[1] * 0.5)

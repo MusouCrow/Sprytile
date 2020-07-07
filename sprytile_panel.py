@@ -148,6 +148,13 @@ class SprytilePanel(bpy.types.Panel):
             layout.prop(sprytile_data, "auto_merge", toggle=True)
             box = layout.box()
             box.prop(sprytile_data, "fill_lock_transform", toggle=True)
+
+            right_col = box.column(align=True)
+            right_col.label(text="UV Align")
+            right_col.row(align=True).prop(sprytile_data, "paint_align_top", toggle=True, text="")
+            right_col.row(align=True).prop(sprytile_data, "paint_align_middle", toggle=True, text="")
+            right_col.row(align=True).prop(sprytile_data, "paint_align_bottom", toggle=True, text="")
+
             box.row().prop(sprytile_data, "fill_plane_size", text="Fill Plane")
 
         row = layout.row(align=True)
