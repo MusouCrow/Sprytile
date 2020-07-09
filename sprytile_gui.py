@@ -616,29 +616,35 @@ class SprytileGui(bpy.types.Operator):
         elif normal_mode == 'Y':
             dir_x *= paint_right_vector.x
         elif normal_mode == 'Z':
-            print(paint_right_vector, paint_up_vector)
-            
             dx = paint_right_vector.x + paint_right_vector.y
             dy = paint_up_vector.x + paint_up_vector.y
             
-            """
-            if dx == dy:
-                tmp = dir_x
-                dir_x = dir_y * -dx
-                dir_y = tmp * -dy
+            if dir_x * dir_y == 0:
+                if dx == dy:
+                    tmp = dir_x
+                    dir_x = dir_y * dx
+                    dir_y = tmp * dy
+                else:
+                    dir_x *= dx
+                    dir_y *= dy
             else:
-                dir_x *= -dx
-                dir_y *= -dy
-            """
-            """
-            if dx == 1 and dy == -1:
-                dir_y *= -1
-            elif dx == dir_x and dy == dir_x:
-                dir_y *= -1
-                dir_x *= -1
-            elif dx == -1 and dy == 1:
-                dir_x *= -1
-            """
+                if dx == 1 and dy == -1:
+                    dir_y *= -1
+                elif dx == dy and ((dir_y == -1 and dx == dir_x) or (dir_y == 1 and dx == -dir_x)):
+                    dir_y *= -1
+                    dir_x *= -1
+                elif dx == -1 and dy == 1:
+                    dir_x *= -1
+
+                """
+                if dx == 1 and dy == -1:
+                    dir_x *= -1
+                elif dx == dir_x and dy == dir_x:
+                    dir_y *= -1
+                    dir_x *= -1
+                elif dx == -1 and dy == 1:
+                    dir_y *= -1
+                """
         
         if normal_mode == 'X':
             pos.y += ceil(plane_size[0] * 0.5) * dir_x

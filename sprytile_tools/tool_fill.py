@@ -75,22 +75,21 @@ class ToolFill:
 
         grid_min, grid_max = sprytile_utils.get_workplane_area(plane_size[0], plane_size[1])
         
-        mx = 0
-        my = 0
+        dir_x = 0
+        dir_y = 0
 
-        print("grid", grid_right, grid_up)
+        if paint_align.find('RIGHT') > -1:
+            dir_x = 1
+        elif paint_align.find('LEFT') > -1:
+            dir_x = -1
+        
+        if paint_align.find('TOP') > -1:
+            dir_y = -1
+        elif paint_align.find('BOTTOM') > -1:
+            dir_y = 1
 
-        if normal_mode == 'X':
-            dir_x = -1 if grid_right.x != 0 else 1
-            dir_y = 1 if grid_right.y != 0 else -1
-            mx = ceil(plane_size[0] * 0.5) * dir_x
-            my = ceil(plane_size[1] * 0.5) * dir_y
-        elif normal_mode == 'Y':
-            mx = ceil(plane_size[0] * 0.5)
-            my = ceil(plane_size[1] * 0.5)
-        elif normal_mode == 'Z':
-            mx = ceil(plane_size[0] * 0.5)
-            my = ceil(plane_size[1] * 0.5)
+        mx = ceil(plane_size[0] * 0.5) * dir_x
+        my = ceil(plane_size[1] * 0.5) * -dir_y
 
         grid_min[0] -= mx
         grid_min[1] -= my
