@@ -601,6 +601,9 @@ class SprytileGui(bpy.types.Operator):
         dir_x = 0
         dir_y = 0
 
+        dx = paint_right_vector.x + paint_right_vector.y
+        dy = paint_up_vector.x + paint_up_vector.y
+
         if paint_align.find('RIGHT') > -1:
             dir_x = 1
         elif paint_align.find('LEFT') > -1:
@@ -615,10 +618,7 @@ class SprytileGui(bpy.types.Operator):
             dir_x *= paint_right_vector.y
         elif normal_mode == 'Y':
             dir_x *= paint_right_vector.x
-        elif normal_mode == 'Z':
-            dx = paint_right_vector.x + paint_right_vector.y
-            dy = paint_up_vector.x + paint_up_vector.y
-            
+        elif normal_mode == 'Z':            
             if dir_x * dir_y == 0:
                 if dx == dy:
                     tmp = dir_x
@@ -636,26 +636,16 @@ class SprytileGui(bpy.types.Operator):
                 elif dx == -1 and dy == 1:
                     dir_x *= -1
 
-                """
-                if dx == 1 and dy == -1:
-                    dir_x *= -1
-                elif dx == dir_x and dy == dir_x:
-                    dir_y *= -1
-                    dir_x *= -1
-                elif dx == -1 and dy == 1:
-                    dir_y *= -1
-                """
-        
         if normal_mode == 'X':
-            pos.y += ceil(plane_size[0] * 0.5) * dir_x
-            pos.z += ceil(plane_size[1] * 0.5) * dir_y
+            pos.y += floor(plane_size[0] * 0.5) * dir_x
+            pos.z += floor(plane_size[1] * 0.5) * dir_y
         elif normal_mode == 'Y':
-            pos.x += ceil(plane_size[0] * 0.5) * dir_x
-            pos.z += ceil(plane_size[1] * 0.5) * dir_y
+            pos.x += floor(plane_size[0] * 0.5) * dir_x
+            pos.z += floor(plane_size[1] * 0.5) * dir_y
         elif normal_mode == 'Z':
-            pos.x += ceil(plane_size[0] * 0.5) * dir_x
-            pos.y += ceil(plane_size[1] * 0.5) * dir_y
-
+            pos.x += floor(plane_size[0] * 0.5) * dir_x
+            pos.y += floor(plane_size[1] * 0.5) * dir_y
+        
         for x in range(grid_min[0] + 1, grid_max[0]):
             draw_start = pos + (paint_right_vector * x) + (paint_up_vector * grid_min[1])
             draw_end = draw_start + paint_up_vector * plane_size[1]

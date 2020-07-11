@@ -88,8 +88,8 @@ class ToolFill:
         elif paint_align.find('BOTTOM') > -1:
             dir_y = 1
 
-        mx = ceil(plane_size[0] * 0.5) * dir_x
-        my = ceil(plane_size[1] * 0.5) * -dir_y
+        mx = floor(plane_size[0] * 0.5) * dir_x
+        my = floor(plane_size[1] * 0.5) * -dir_y
 
         grid_min[0] -= mx
         grid_min[1] -= my
